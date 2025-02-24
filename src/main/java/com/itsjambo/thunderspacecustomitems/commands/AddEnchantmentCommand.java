@@ -10,7 +10,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddEnchantmentCommand implements CommandExecutor, TabCompleter {
 
@@ -53,13 +55,17 @@ public class AddEnchantmentCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        List<String> enchantmentNames = itemSection.getStringList("enchantments.names");
-        List<Integer> enchantmentLevels = itemSection.getIntegerList("enchantments.levels");
-        enchantmentNames.add(enchantment.getName());
-        enchantmentLevels.add(level);
+        List<Map<String, Object>> enchantments = (List<Map<String, Object>>) itemSection.getList("enchantments");
+        if (enchantments == null) {
+            enchantments = new ArrayList<>();
+        }
 
-        itemSection.set("enchantments.names", enchantmentNames);
-        itemSection.set("enchantments.levels", enchantmentLevels);
+        Map<String, Object> enchantmentData = new HashMap<>();
+        enchantmentData.put("name", enchantment.getName());
+        enchantmentData.put("level", level);
+        enchantments.add(enchantmentData);
+
+        itemSection.set("enchantments", enchantments);
 
         plugin.getConfigManager().saveConfig();
         sender.sendMessage("Enchantment added to item ID " + id + ".");
