@@ -1,4 +1,26 @@
 name: ThunderSpaceCustomItems
-version: '${version}'
 main: com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems
-api-version: '1.16'
+version: 1.0
+api-version: 1.16
+commands:
+  tsci-create:
+    description: Create a custom item.
+    usage: /tsci-create [name] [description] [material] [enchantment]:[level]
+  tsci-reload:
+    description: Reload the plugin configuration.
+    usage: /tsci-reload
+  tsci-3x3:
+    description: Create a custom item that breaks blocks in a 3x3 radius.
+    usage: /tsci-3x3 [name] [description] [material]
+  tsci-5x5:
+    description: Create a custom item that breaks blocks in a 5x5 radius.
+    usage: /tsci-5x5 [name] [description] [material]
+  tsci-give:
+    description: Give a custom item to a player by ID.
+    usage: /tsci-give [nickname] [id]
+  tsci-help:
+    description: Show the help menu.
+    usage: /tsci-help
+  tsci-addenchantment:
+    description: Add an enchantment to an existing item.
+    usage: /tsci-addenchantment [id] [enchantment]:[level]
