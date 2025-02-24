@@ -14,7 +14,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CreateCommand implements CommandExecutor, TabCompleter {
 
@@ -81,35 +83,26 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
     }
 
     private void saveItemToConfig(String name, String description, Material material, Enchantment enchantment, int level) {
+        if (plugin.getConfigManager().getItemsConfig().getConfigurationSection("items") == null) {
+            plugin.getConfigManager().getItemsConfig().createSection("items");
+        }
         int id = plugin.getConfigManager().getItemsConfig().getConfigurationSection("items").getKeys(false).size() + 1;
         String path = "items.id-" + id;
 
         plugin.getConfigManager().getItemsConfig().set(path + ".name", name);
         plugin.getConfigManager().getItemsConfig().set(path + ".description", description);
         plugin.getConfigManager().getItemsConfig().set(path + ".material", material.toString());
-        List<Object> enchantments = new ArrayList<>();
-        enchantments.add(new EnchantmentData(enchantment.getName(), level));
+
+        // Store enchantments as a list of maps
+        List<Map<String, Object>> enchantments = new ArrayList<>();
+        Map<String, Object> enchantmentData = new HashMap<>();
+        enchantmentData.put("name", enchantment.getName());
+        enchantmentData.put("level", level);
+        enchantments.add(enchantmentData);
+
         plugin.getConfigManager().getItemsConfig().set(path + ".enchantments", enchantments);
 
         plugin.getConfigManager().saveConfig();
-    }
-
-    private static class EnchantmentData {
-        private final String name;
-        private final int level;
-
-        public EnchantmentData(String name, int level) {
-            this.name = name;
-            this.level = level;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getLevel() {
-            return level;
-        }
     }
 
     @Override
