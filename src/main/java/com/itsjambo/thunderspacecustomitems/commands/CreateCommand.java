@@ -87,8 +87,7 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         plugin.getConfigManager().getItemsConfig().set(path + ".name", name);
         plugin.getConfigManager().getItemsConfig().set(path + ".description", description);
         plugin.getConfigManager().getItemsConfig().set(path + ".material", material.toString());
-        plugin.getConfigManager().getItemsConfig().set(path + ".ench antments", enchantment.getName());
-        plugin.getConfigManager().getItemsConfig().set(path + ".level", level.getName());
+        plugin.getConfigManager().getItemsConfig().set(path + ".enchantments", enchantment.getName());
 
         plugin.getConfigManager().saveConfig();
     }
