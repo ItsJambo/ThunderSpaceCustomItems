@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class GiveCommand implements CommandExecutor, TabCompleter {
@@ -62,12 +63,13 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
         meta.setLore(lore);
         item.setItemMeta(meta);
 
-        List<String> enchantmentNames = itemSection.getStringList("enchantments.names");
-        List<Integer> enchantmentLevels = itemSection.getIntegerList("enchantments.levels");
-        for (int i = 0; i < enchantmentNames.size(); i++) {
-            Enchantment enchantment = Enchantment.getByName(enchantmentNames.get(i));
+        List<Map<?, ?>> enchantments = itemSection.getMapList("enchantments");
+        for (Map<?, ?> enchantmentData : enchantments) {
+            String enchantmentName = (String) enchantmentData.get("name");
+            int level = (int) enchantmentData.get("level");
+            Enchantment enchantment = Enchantment.getByName(enchantmentName);
             if (enchantment != null) {
-                item.addUnsafeEnchantment(enchantment, enchantmentLevels.get(i));
+                item.addUnsafeEnchantment(enchantment, level);
             }
         }
 
