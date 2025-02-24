@@ -62,22 +62,12 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
         meta.setLore(lore);
         item.setItemMeta(meta);
 
-        String enchantmentString = itemSection.getString("enchantments");
-        if (enchantmentString != null && !enchantmentString.isEmpty()) {
-            String[] enchantmentParts = enchantmentString.split(" \\| ");
-            for (String part : enchantmentParts) {
-                String[] enchantmentData = part.split(" ");
-                if (enchantmentData.length == 2) {
-                    Enchantment enchantment = Enchantment.getByName(enchantmentData[0]);
-                    if (enchantment != null) {
-                        try {
-                            int level = Integer.parseInt(enchantmentData[1].replace("level", "").trim());
-                            item.addUnsafeEnchantment(enchantment, level);
-                        } catch (NumberFormatException e) {
-                            sender.sendMessage("Invalid enchantment level in config for ID " + id + ".");
-                        }
-                    }
-                }
+        List<String> enchantmentNames = itemSection.getStringList("enchantments.names");
+        List<Integer> enchantmentLevels = itemSection.getIntegerList("enchantments.levels");
+        for (int i = 0; i < enchantmentNames.size(); i++) {
+            Enchantment enchantment = Enchantment.getByName(enchantmentNames.get(i));
+            if (enchantment != null) {
+                item.addUnsafeEnchantment(enchantment, enchantmentLevels.get(i));
             }
         }
 

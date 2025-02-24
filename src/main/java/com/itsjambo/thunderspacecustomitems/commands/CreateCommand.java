@@ -87,9 +87,29 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         plugin.getConfigManager().getItemsConfig().set(path + ".name", name);
         plugin.getConfigManager().getItemsConfig().set(path + ".description", description);
         plugin.getConfigManager().getItemsConfig().set(path + ".material", material.toString());
-        plugin.getConfigManager().getItemsConfig().set(path + ".enchantments", enchantment.getName());
+        List<Object> enchantments = new ArrayList<>();
+        enchantments.add(new EnchantmentData(enchantment.getName(), level));
+        plugin.getConfigManager().getItemsConfig().set(path + ".enchantments", enchantments);
 
         plugin.getConfigManager().saveConfig();
+    }
+
+    private static class EnchantmentData {
+        private final String name;
+        private final int level;
+
+        public EnchantmentData(String name, int level) {
+            this.name = name;
+            this.level = level;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getLevel() {
+            return level;
+        }
     }
 
     @Override
@@ -98,10 +118,6 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         if (args.length == 3) {
             for (Material material : Material.values()) {
                 suggestions.add(material.name());
-            }
-        } else if (args.length == 4) {
-            for (Enchantment enchantment : Enchantment.values()) {
-                suggestions.add(enchantment.getName() + ":1");
             }
         }
         return suggestions;

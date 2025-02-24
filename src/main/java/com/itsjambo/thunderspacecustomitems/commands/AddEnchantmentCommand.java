@@ -53,14 +53,13 @@ public class AddEnchantmentCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        String enchantmentString = itemSection.getString("enchantments");
-        if (enchantmentString == null) {
-            enchantmentString = "";
-        } else {
-            enchantmentString += " | ";
-        }
-        enchantmentString += enchantment.getName() + " | " + level + " level";
-        itemSection.set("enchantments", enchantmentString);
+        List<String> enchantmentNames = itemSection.getStringList("enchantments.names");
+        List<Integer> enchantmentLevels = itemSection.getIntegerList("enchantments.levels");
+        enchantmentNames.add(enchantment.getName());
+        enchantmentLevels.add(level);
+
+        itemSection.set("enchantments.names", enchantmentNames);
+        itemSection.set("enchantments.levels", enchantmentLevels);
 
         plugin.getConfigManager().saveConfig();
         sender.sendMessage("Enchantment added to item ID " + id + ".");
