@@ -1,6 +1,7 @@
 package com.itsjambo.thunderspacecustomitems.commands;
 
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
+import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,12 +26,12 @@ public class FiveByFiveCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be used by players.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] This command can only be used by players."));
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("Usage: /tsci-5x5 [name] [description] [material]");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Usage: /tsci-5x5 [name] [description] [material]"));
             return true;
         }
 
@@ -39,7 +40,7 @@ public class FiveByFiveCommand implements CommandExecutor, TabCompleter {
         String description = args[1];
         Material material = Material.matchMaterial(args[2].toUpperCase());
         if (material == null) {
-            player.sendMessage("Invalid material.");
+            player.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid material."));
             return true;
         }
 
@@ -54,7 +55,7 @@ public class FiveByFiveCommand implements CommandExecutor, TabCompleter {
         player.getInventory().addItem(item);
         saveItemToConfig(name, description, material, 5);
 
-        player.sendMessage("5x5 breaking item created and added to your inventory.");
+        player.sendMessage(ColorParser.parse("&#08FB52[✔] 5x5 breaking item created and added to your inventory."));
         return true;
     }
 
@@ -71,7 +72,7 @@ public class FiveByFiveCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 3) {
             for (Material material : Material.values()) {

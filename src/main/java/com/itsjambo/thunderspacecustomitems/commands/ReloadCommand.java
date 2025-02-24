@@ -1,6 +1,7 @@
 package com.itsjambo.thunderspacecustomitems.commands;
 
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
+import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class ReloadCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         plugin.getConfigManager().reloadConfig();
-        sender.sendMessage("Configuration reloaded.");
+        sender.sendMessage(ColorParser.parse("&#08FB52[✔] Configuration reloaded."));
         return true;
     }
 

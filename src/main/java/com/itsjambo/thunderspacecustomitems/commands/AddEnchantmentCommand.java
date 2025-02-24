@@ -1,6 +1,8 @@
 package com.itsjambo.thunderspacecustomitems.commands;
 
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
+import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
+import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,14 +27,14 @@ public class AddEnchantmentCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage("Usage: /tsci-addenchantment [id] [enchantment]:[level]");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] pUsage: /tsci-addenchantment [id] [enchantment]:[level]"));
             return true;
         }
 
         String id = "id-" + args[0];
         String[] enchantmentParts = args[1].split(":");
         if (enchantmentParts.length != 2) {
-            sender.sendMessage("Invalid enchantment format.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid enchantment format."));
             return true;
         }
         Enchantment enchantment = Enchantment.getByName(enchantmentParts[0].toUpperCase());
@@ -40,18 +42,18 @@ public class AddEnchantmentCommand implements CommandExecutor, TabCompleter {
         try {
             level = Integer.parseInt(enchantmentParts[1]);
         } catch (NumberFormatException e) {
-            sender.sendMessage("Invalid enchantment level.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid enchantment level."));
             return true;
         }
 
         if (enchantment == null) {
-            sender.sendMessage("Invalid enchantment.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid enchantment."));
             return true;
         }
 
         ConfigurationSection itemSection = plugin.getConfigManager().getItemsConfig().getConfigurationSection("items." + id);
         if (itemSection == null) {
-            sender.sendMessage("Item ID not found.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Item ID not found."));
             return true;
         }
 
@@ -68,12 +70,12 @@ public class AddEnchantmentCommand implements CommandExecutor, TabCompleter {
         itemSection.set("enchantments", enchantments);
 
         plugin.getConfigManager().saveConfig();
-        sender.sendMessage("Enchantment added to item ID " + id + ".");
+        sender.sendMessage(ColorParser.parse("&#08FB52[✔] Enchantment added to item ID " + id + "&#08FB52."));
         return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 1) {
             ConfigurationSection itemsSection = plugin.getConfigManager().getItemsConfig().getConfigurationSection("items");

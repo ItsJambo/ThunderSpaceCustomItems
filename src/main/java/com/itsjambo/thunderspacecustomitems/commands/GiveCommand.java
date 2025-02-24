@@ -1,6 +1,7 @@
 package com.itsjambo.thunderspacecustomitems.commands;
 
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
+import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -30,20 +31,20 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage("Usage: /tsci-give [nickname] [id]");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Usage: /tsci-give [nickname] [id]"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage("Player not found.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Player not found."));
             return true;
         }
 
         String id = "id-" + args[1];
         ConfigurationSection itemSection = plugin.getConfigManager().getItemsConfig().getConfigurationSection("items." + id);
         if (itemSection == null) {
-            sender.sendMessage("Item ID not found.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Item ID not found."));
             return true;
         }
 
@@ -51,7 +52,7 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
         String description = itemSection.getString("description");
         Material material = Material.matchMaterial(Objects.requireNonNull(itemSection.getString("material")));
         if (material == null) {
-            sender.sendMessage("Invalid material in config.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid material in config."));
             return true;
         }
 
@@ -74,7 +75,7 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
         }
 
         target.getInventory().addItem(item);
-        sender.sendMessage("Item given to " + target.getName() + ".");
+        sender.sendMessage(ColorParser.parse("&#08FB52[✔] Item given to " + target.getName() + "."));
         return true;
     }
 

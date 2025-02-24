@@ -1,6 +1,8 @@
 package com.itsjambo.thunderspacecustomitems.commands;
 
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
+import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,12 +27,12 @@ public class ThreeByThreeCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be used by players.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘]  This command can only be used by players."));
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("Usage: /tsci-3x3 [name] [description] [material]");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Usage: /tsci-3x3 [name] [description] [material]"));
             return true;
         }
 
@@ -39,7 +41,7 @@ public class ThreeByThreeCommand implements CommandExecutor, TabCompleter {
         String description = args[1];
         Material material = Material.matchMaterial(args[2].toUpperCase());
         if (material == null) {
-            player.sendMessage("Invalid material.");
+            player.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid material."));
             return true;
         }
 
@@ -54,7 +56,7 @@ public class ThreeByThreeCommand implements CommandExecutor, TabCompleter {
         player.getInventory().addItem(item);
         saveItemToConfig(name, description, material, 3);
 
-        player.sendMessage("3x3 breaking item created and added to your inventory.");
+        player.sendMessage(ColorParser.parse("&#08FB52[✔] 3x3 breaking item created and added to your inventory."));
         return true;
     }
 

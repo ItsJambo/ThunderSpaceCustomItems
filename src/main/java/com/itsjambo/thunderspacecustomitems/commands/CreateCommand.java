@@ -3,6 +3,7 @@ package com.itsjambo.thunderspacecustomitems.commands;
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
 import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,14 +26,14 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can only be used by players.");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] This command can only be used by players."));
             return true;
         }
 
         if (args.length < 4) {
-            sender.sendMessage("Usage: /tsci-create [name] [description] [material] [enchantment]:[level]");
+            sender.sendMessage(ColorParser.parse("&#08FB52[✘] Usage: /tsci-create [name] [description] [material] [enchantment]:[level]"));
             return true;
         }
 
@@ -41,13 +42,13 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         String description = ColorParser.parse(args[1]);
         Material material = Material.matchMaterial(args[2].toUpperCase());
         if (material == null) {
-            player.sendMessage("Invalid material.");
+            player.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid material."));
             return true;
         }
 
         String[] enchantmentParts = args[3].split(":");
         if (enchantmentParts.length != 2) {
-            player.sendMessage("Invalid enchantment format.");
+            player.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid enchantment format."));
             return true;
         }
         Enchantment enchantment = Enchantment.getByName(enchantmentParts[0].toUpperCase());
@@ -55,12 +56,12 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         try {
             level = Integer.parseInt(enchantmentParts[1]);
         } catch (NumberFormatException e) {
-            player.sendMessage("Invalid enchantment level.");
+            player.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid enchantment level."));
             return true;
         }
 
         if (enchantment == null) {
-            player.sendMessage("Invalid enchantment.");
+            player.sendMessage(ColorParser.parse("&#08FB52[✘] Invalid enchantment."));
             return true;
         }
 
@@ -76,7 +77,7 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         player.getInventory().addItem(item);
         saveItemToConfig(name, description, material, enchantment, level);
 
-        player.sendMessage("Item created and added to your inventory.");
+        player.sendMessage(ColorParser.parse("&#08FB52[✔] Item created and added to your inventory."));
         return true;
     }
 
