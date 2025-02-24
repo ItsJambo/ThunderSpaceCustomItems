@@ -1,6 +1,7 @@
 package com.itsjambo.thunderspacecustomitems.commands;
 
 import com.itsjambo.thunderspacecustomitems.ThunderSpaceCustomItems;
+import com.itsjambo.thunderspacecustomitems.utils.ColorParser;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -13,10 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CreateCommand implements CommandExecutor, TabCompleter {
 
@@ -39,8 +37,8 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        String name = args[0];
-        String description = args[1];
+        String name = ColorParser.parse(args[0]);
+        String description = ColorParser.parse(args[1]);
         Material material = Material.matchMaterial(args[2].toUpperCase());
         if (material == null) {
             player.sendMessage("Invalid material.");
@@ -93,7 +91,6 @@ public class CreateCommand implements CommandExecutor, TabCompleter {
         plugin.getConfigManager().getItemsConfig().set(path + ".description", description);
         plugin.getConfigManager().getItemsConfig().set(path + ".material", material.toString());
 
-        // Store enchantments as a list of maps
         List<Map<String, Object>> enchantments = new ArrayList<>();
         Map<String, Object> enchantmentData = new HashMap<>();
         enchantmentData.put("name", enchantment.getName());
