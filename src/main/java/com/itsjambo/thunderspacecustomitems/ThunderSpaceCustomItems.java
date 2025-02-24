@@ -5,6 +5,8 @@ import com.itsjambo.thunderspacecustomitems.config.ConfigManager;
 import com.itsjambo.thunderspacecustomitems.listeners.BlockBreakListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public class ThunderSpaceCustomItems extends JavaPlugin {
 
     private ConfigManager configManager;
@@ -16,21 +18,21 @@ public class ThunderSpaceCustomItems extends JavaPlugin {
             configManager = new ConfigManager(this);
             configManager.loadConfig();
 
-            getCommand("tsci-create").setExecutor(new CreateCommand(this));
-            getCommand("tsci-reload").setExecutor(new ReloadCommand(this));
-            getCommand("tsci-3x3").setExecutor(new ThreeByThreeCommand(this));
-            getCommand("tsci-5x5").setExecutor(new FiveByFiveCommand(this));
-            getCommand("tsci-give").setExecutor(new GiveCommand(this));
-            getCommand("tsci-help").setExecutor(new HelpCommand());
-            getCommand("tsci-addenchantment").setExecutor(new AddEnchantmentCommand(this));
+            Objects.requireNonNull(getCommand("tsci-create")).setExecutor(new CreateCommand(this));
+            Objects.requireNonNull(getCommand("tsci-reload")).setExecutor(new ReloadCommand(this));
+            Objects.requireNonNull(getCommand("tsci-3x3")).setExecutor(new ThreeByThreeCommand(this));
+            Objects.requireNonNull(getCommand("tsci-5x5")).setExecutor(new FiveByFiveCommand(this));
+            Objects.requireNonNull(getCommand("tsci-give")).setExecutor(new GiveCommand(this));
+            Objects.requireNonNull(getCommand("tsci-help")).setExecutor(new HelpCommand());
+            Objects.requireNonNull(getCommand("tsci-addenchantment")).setExecutor(new AddEnchantmentCommand(this));
 
-            getCommand("tsci-create").setTabCompleter(new CreateCommand(this));
-            getCommand("tsci-reload").setTabCompleter(new ReloadCommand(this));
-            getCommand("tsci-3x3").setTabCompleter(new ThreeByThreeCommand(this));
-            getCommand("tsci-5x5").setTabCompleter(new FiveByFiveCommand(this));
-            getCommand("tsci-give").setTabCompleter(new GiveCommand(this));
-            getCommand("tsci-help").setTabCompleter(new HelpCommand());
-            getCommand("tsci-addenchantment").setTabCompleter(new AddEnchantmentCommand(this));
+            Objects.requireNonNull(getCommand("tsci-create")).setTabCompleter(new CreateCommand(this));
+            Objects.requireNonNull(getCommand("tsci-reload")).setTabCompleter(new ReloadCommand(this));
+            Objects.requireNonNull(getCommand("tsci-3x3")).setTabCompleter(new ThreeByThreeCommand(this));
+            Objects.requireNonNull(getCommand("tsci-5x5")).setTabCompleter(new FiveByFiveCommand(this));
+            Objects.requireNonNull(getCommand("tsci-give")).setTabCompleter(new GiveCommand(this));
+            Objects.requireNonNull(getCommand("tsci-help")).setTabCompleter(new HelpCommand());
+            Objects.requireNonNull(getCommand("tsci-addenchantment")). setTabCompleter(new AddEnchantmentCommand(this));
 
             getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
         } catch (Exception e) {

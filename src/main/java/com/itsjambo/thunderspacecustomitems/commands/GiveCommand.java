@@ -12,9 +12,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GiveCommand implements CommandExecutor, TabCompleter {
 
@@ -25,7 +27,7 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length < 2) {
             sender.sendMessage("Usage: /tsci-give [nickname] [id]");
             return true;
@@ -46,7 +48,7 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
 
         String name = itemSection.getString("name");
         String description = itemSection.getString("description");
-        Material material = Material.matchMaterial(itemSection.getString("material"));
+        Material material = Material.matchMaterial(Objects.requireNonNull(itemSection.getString("material")));
         if (material == null) {
             sender.sendMessage("Invalid material in config.");
             return true;
@@ -65,11 +67,11 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
             String[] enchantmentParts = enchantmentString.split(" \\| ");
             for (String part : enchantmentParts) {
                 String[] enchantmentData = part.split(" ");
-                if (enchantmentData.length == 3) {
+                if (enchantmentData.length == 2) {
                     Enchantment enchantment = Enchantment.getByName(enchantmentData[0]);
                     if (enchantment != null) {
                         try {
-                            int level = Integer.parseInt(enchantmentData[2].replace("level", "").trim());
+                            int level = Integer.parseInt(enchantmentData[1].replace("level", "").trim());
                             item.addUnsafeEnchantment(enchantment, level);
                         } catch (NumberFormatException e) {
                             sender.sendMessage("Invalid enchantment level in config for ID " + id + ".");
@@ -85,7 +87,7 @@ public class GiveCommand implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         List<String> suggestions = new ArrayList<>();
         if (args.length == 1) {
             for (Player player : Bukkit.getOnlinePlayers()) {
